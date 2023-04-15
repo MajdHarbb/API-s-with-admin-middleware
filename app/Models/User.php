@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use App\Models\Todo;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -62,10 +63,15 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    //method to check for user role
     public function isAdmin()
     {
         // dd($this->role === 'admin');
         return $this->role === 'admin';
     }
 
+    public function todos()
+    {
+        return $this->hasMany(Todo::class);
+    }
 }

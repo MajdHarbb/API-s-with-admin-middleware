@@ -12,16 +12,25 @@ class TodoController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function index()
+    public function userTodos(Request $request)
     {
-        $todos = Todo::all();
+        //without relationship
+        // $todos = Todo::where('user_id', '=', $request->user_id);
+        // return response()->json([
+        //     'status' => 'success',
+        //     'todos' => $todos,
+        // ]);
+        
+        //with relationship
+        $user = User::find($request->user_id);
+        $todos = $user->todos;
         return response()->json([
             'status' => 'success',
             'todos' => $todos,
         ]);
     }
 
-    public function store(Request $request)
+    public function addTodo(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -29,6 +38,7 @@ class TodoController extends Controller
         ]);
 
         $todo = Todo::create([
+            'user_id' => $request->user_id,
             'title' => $request->title,
             'description' => $request->description,
         ]);
@@ -40,7 +50,7 @@ class TodoController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function getTodo($id)
     {
         $todo = Todo::find($id);
         return response()->json([
@@ -49,7 +59,7 @@ class TodoController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function updateTodo(Request $request, $id)
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -68,7 +78,7 @@ class TodoController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function deleteTodo($id)
     {
         $todo = Todo::find($id);
         $todo->delete();

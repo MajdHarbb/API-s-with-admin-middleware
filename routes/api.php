@@ -19,17 +19,18 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         //from TodoController (to be modified later)
         Route::controller(TodoController::class)->group(function () {
-            Route::get('todos', 'index');
-            Route::post('todo', 'store');
-            Route::get('todo/{id}', 'show');
-            Route::put('todo/{id}', 'update');
-            Route::delete('todo/{id}', 'destroy');
+            Route::get('todos-by-user', 'userTodos');
+            Route::post('add-todo', 'addTodo');
+            Route::get('get-todo', 'getTodo');
+            Route::put('update-todo', 'updateTodo');
+            Route::delete('delete-todo', 'deleteTodo');
         });
 
         //admin API's protected by admin middleware and require /auth/admin/ before API name
         Route::group(['middleware' => ['admin']], function () {
             Route::group(['prefix' => 'admin'], function () {
                 Route::get('/users', [AdminController::class, 'users'])->name('users'); 
+                Route::get('/todos', [AdminController::class, 'todos'])->name('todos'); 
             });
         });
         

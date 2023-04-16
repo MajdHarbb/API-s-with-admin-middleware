@@ -37,7 +37,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     });
 });
 
-//unprotected API routes
+//unprotected API routes has an auth prefix, but execluded from auth middleware using __construct() in method AuthController
 Route::group(['prefix' => 'auth'], function () {
     //from AuthController
     Route::controller(AuthController::class)->group(function () {

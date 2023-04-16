@@ -38,5 +38,10 @@ Route::group(['middleware' => ['auth:api']], function () {
 });
 
 //unprotected API routes
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::group(['prefix' => 'auth'], function () {
+    //from AuthController
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('login', 'login');
+        Route::post('register', 'register');
+    });
+});

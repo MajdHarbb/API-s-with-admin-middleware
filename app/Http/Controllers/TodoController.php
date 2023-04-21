@@ -24,7 +24,8 @@ class TodoController extends Controller
         
         //with relationship
         try {
-            $user = User::find($request->user_id);
+            $user = Auth::user();
+            // $user = User::find($request->user_id);
             $todos = $user->todos;
             return response()->json([
                 'status' => 'success',
